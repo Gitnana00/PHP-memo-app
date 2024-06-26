@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'preline';
+
 [x-cloak] {
     display: none;
 }

@@ -12,7 +12,8 @@ class MemoController extends Controller
      */
     public function index()
     {
-        $memos = Memo::all();
+        $page_count = 10;
+        $memos = Memo::paginate($page_count);
         return view('dashboard', compact('memos'));
     }
 
@@ -48,7 +49,8 @@ class MemoController extends Controller
      */
     public function edit(Memo $memo)
     {
-        //
+        $user = auth()->user();
+        return view('memo.edit', compact('user', 'memo'));
     }
 
     /**
@@ -56,7 +58,8 @@ class MemoController extends Controller
      */
     public function update(Request $request, Memo $memo)
     {
-        //
+        $memo->fill($request->all())->save();
+        return redirect(route('dashboard'))->with('message', 'メモが更新されました。');
     }
 
     /**
@@ -64,6 +67,7 @@ class MemoController extends Controller
      */
     public function destroy(Memo $memo)
     {
-        //
+        $memo->delete();
+        return redirect(route('dashboard'))->with('message', 'メモが削除されました。');
     }
 }
