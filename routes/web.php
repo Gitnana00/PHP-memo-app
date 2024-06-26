@@ -4,7 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MemoController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if(empty(session('message')) == true) {
+        return view('welcome');
+    } else {
+        return redirect(route('memo.index'))->with('message', session('message'));
+    }
 });
 
 Route::resource('memo', MemoController::class);
