@@ -4,11 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MemoController;
 
 Route::get('/', function () {
-    if(empty(session('message')) == true) {
-        return view('welcome');
-    } else {
-        return redirect(route('memo.index'))->with('message', session('message'));
-    }
+    return view('welcome');
 });
 
 Route::resource('memo', MemoController::class);
@@ -19,6 +15,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return redirect(route('memo.index'));
-    })->name('dashboard');
+        if(empty(session('message')) == true) {
+            return redirect(route('memo.index'));
+        } else {
+            return redirect(route('memo.index'))->with('message', session('message'));
+        }
+  })->name('dashboard');
 });
